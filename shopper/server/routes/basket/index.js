@@ -1,32 +1,14 @@
 const express = require("express");
 
-module.exports = () => {
+const ItemService = require("../../services/ItemService");
+const BasketService = require("../../services/BasketService");
+const OrderService = require("../../services/OrderService");
+
+module.exports = (config) => {
   const router = express.Router();
+  const order = new OrderService(config.mysql.client);
 
   router.get("/", async (req, res) => {
-    return res.render("basket", {});
-<<<<<<< HEAD
-
-    /*
-    const basketItems = await basket.getAll();
-    let items = [];
-    if (basketItems) {
-      items = await Promise.all(Object.keys(basketItems).map(async (itemId) => {
-        const item = await ItemService.getOne(itemId);
-        item.quantity = basketItems[key];
-        return item;
-      }));
-    }
-    return res.render('basket', { items });
-    */
-  });
-
-  router.get("/remove/:itemId", async (req, res, next) => {
-    return next("Not implemented");
-=======
->>>>>>> 03_07e
-
-    /*
     if (!res.locals.currentUser) {
       req.session.messages.push({
         type: "warning",
@@ -34,22 +16,6 @@ module.exports = () => {
       });
       return res.redirect("/shop");
     }
-<<<<<<< HEAD
-
-    try {
-      await basket.remove(itemId);
-      req.session.messages.push({
-        type: 'success',
-        text: 'The item was removed from the the basket',
-      });
-    } catch (err) {
-      req.session.messages.push({
-        type: 'danger',
-        text: 'There was an error removing the item from the basket',
-      });
-      console.error(err);
-      return res.redirect('/basket');
-=======
     const basket = new BasketService(
       config.redis.client,
       res.locals.currentUser.id
@@ -64,20 +30,11 @@ module.exports = () => {
           return item;
         })
       );
->>>>>>> 03_07e
     }
     return res.render("basket", { items });
-    */
   });
 
-<<<<<<< HEAD
-  router.get("/buy", async (req, res, next) => {
-=======
-  router.get("/remove/:itemId", async (req, res, next) => {
->>>>>>> 03_07e
-    return next("Not implemented");
-
-    /*
+  router.get("/remove/:itemId", async (req, res) => {
     if (!res.locals.currentUser) {
       req.session.messages.push({
         type: "warning",
@@ -106,12 +63,9 @@ module.exports = () => {
     }
 
     return res.redirect("/basket");
-    */
   });
 
-  router.get("/buy", async (req, res, next) => {
-    return next("Not implemented");
-    /*
+  router.get("/buy", async (req, res) => {
     if (!res.locals.currentUser) {
       req.session.messages.push({
         type: "warning",
@@ -124,10 +78,7 @@ module.exports = () => {
       const user = res.locals.currentUser;
 
       // Get all basket items for a user
-<<<<<<< HEAD
-=======
       const basket = new BasketService(config.redis.client, userId);
->>>>>>> 03_07e
       const basketItems = await basket.getAll();
 
       // be defensive
@@ -154,17 +105,11 @@ module.exports = () => {
         // Create a new order and add all items
         await order.create(user, items, t);
         // Clear the users basket
-<<<<<<< HEAD
-        await Promise.all(Object.keys(basketItems).map(async (itemId) => {
-          await basket.remove(key);
-        }));
-=======
         await Promise.all(
           Object.keys(basketItems).map(async (itemId) => {
             await basket.remove(itemId);
           })
         );
->>>>>>> 03_07e
       });
 
       req.session.messages.push({
@@ -181,7 +126,6 @@ module.exports = () => {
       console.error(err);
       return res.redirect("/basket");
     }
-    */
   });
 
   return router;
