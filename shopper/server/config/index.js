@@ -1,8 +1,8 @@
-const pkg = require('../../package.json');
+const pkg = require("../../package.json");
 
 module.exports = {
   applicationName: pkg.name,
   mongodb: {
-    url: 'mongodb://localhost:37017/shopper',
-  }
+    url: "mongodb://localhost:37017/shopper",
+  },
 };
