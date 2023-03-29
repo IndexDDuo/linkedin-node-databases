@@ -96,12 +96,8 @@ module.exports = () => {
       const items = await Promise.all(
         Object.keys(basketItems).map(async (key) => {
           const item = await ItemService.getOne(key);
-          return {
-            sku: item.sku,
-            qty: basketItems[key],
-            price: item.price,
-            name: item.name,
-          };
+          item.quantity = basketItems[key];
+          return item;
         })
       );
 
