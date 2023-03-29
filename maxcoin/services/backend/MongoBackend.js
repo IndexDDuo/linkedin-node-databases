@@ -1,9 +1,7 @@
 /* eslint-disable no-useless-constructor */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-empty-function */
-
 const { MongoClient } = require("mongodb");
-
 const CoinAPI = require("../CoinAPI");
 
 class MongoBackend {
@@ -14,17 +12,6 @@ class MongoBackend {
     this.collection = null;
   }
 
-<<<<<<< HEAD
-  async connect() {}
-
-  async disconnect() {}
-
-  async insert() {}
-
-  async getMax() {}
-
-  async max() {}
-=======
   async connect() {
     const mongoClient = new MongoClient(this.mongoUrl, {
       useUnifiedTopology: true,
@@ -55,14 +42,14 @@ class MongoBackend {
   }
 
   async getMax() {
-    return this.collection.findOne({}, { sort: { value: -1 } });
+    return this.collection.findOne({}, { sort: { value: 1 } });
   }
 
   async max() {
     console.info("Connection to MongoDB");
     console.time("mongodb-connect");
     const client = await this.connect();
-    if (client.isConnected()) {
+    if (client.topology.isConnected()) {
       console.info("Successfully connected to MongoDB");
     } else {
       throw new Error("Connecting to MongoDB failed");
@@ -74,7 +61,9 @@ class MongoBackend {
     const insertResult = await this.insert();
     console.timeEnd("mongodb-insert");
 
-    console.info(`Inserted ${insertResult.result.n} documents into MongoDB`);
+    console.info(
+      `Inserted ${insertResult.insertedCount} documents into MongoDB`
+    );
 
     console.info("Querying MongoDB");
     console.time("mongodb-find");
@@ -91,7 +80,6 @@ class MongoBackend {
       value: doc.value,
     };
   }
->>>>>>> 03_07e
 }
 
 module.exports = MongoBackend;
